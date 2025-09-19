@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# extract_svo2_dataset.py — SVO2 → per-ID/images + per-ID/depth (sample every 20 frames)
+# extract_svo2_dataset.py — SVO2 → per-ID/images + per-ID/depth (sample every 20 frames, prefixed)
 
 from pathlib import Path
 import sys, numpy as np, cv2
@@ -13,7 +13,6 @@ def extract_one(svo_path: Path, out_root: Path):
     img_dir   = out_root / sid / "images"; img_dir.mkdir(parents=True, exist_ok=True)
     depth_dir = out_root / sid / "depth";  depth_dir.mkdir(parents=True, exist_ok=True)
 
-    # --- Init playback ---
     init = sl.InitParameters()
     init.set_from_svo_file(str(svo_path))
     init.svo_real_time_mode   = False
@@ -38,7 +37,8 @@ def extract_one(svo_path: Path, out_root: Path):
         if err != sl.ERROR_CODE.SUCCESS: break
 
         if frame % STRIDE == 0:
-            name = f"{frame:06d}"
+            # unified basename with SVO ID prefix
+            name = f"{sid}_{frame:06d}"
 
             # --- RGB: BGRA → BGR ---
             cam.retrieve_image(z_img, sl.VIEW.LEFT)
