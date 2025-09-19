@@ -26,7 +26,6 @@ def extract_one(svo_path: Path, out_root: Path):
         return
 
     runtime = sl.RuntimeParameters()
-    runtime.sensing_mode = sl.SENSING_MODE.FILL
 
     z_img, z_dep = sl.Mat(), sl.Mat()
     frame = 0
