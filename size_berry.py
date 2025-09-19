@@ -9,7 +9,7 @@ ROOT = Path("dataset"); RAW=ROOT/"raw"; LBL=ROOT/"labels"; CSV=ROOT/"metadata.cs
 def ensure_dirs():
     RAW.mkdir(parents=True, exist_ok=True); LBL.mkdir(parents=True, exist_ok=True)
 
-def f(prompt):
+def ask_float(prompt):
     while True:
         try: return float(input(prompt).strip())
         except: pass
@@ -30,7 +30,7 @@ def main():
             svo = RAW/f"{sid}.svo2"
             if svo.exists(): print("exists"); continue
 
-            w = f("weight g: "); c = f("caliber mm: ")
+            w = ask_float("weight g: "); c = ask_float("caliber mm: ")
 
             if cam.enable_recording(sl.RecordingParameters(str(svo), sl.SVO_COMPRESSION_MODE.H265)) != sl.ERROR_CODE.SUCCESS:
                 print("rec fail"); continue
